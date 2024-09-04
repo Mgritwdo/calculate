@@ -1,5 +1,5 @@
 #include <iostream>
-
+//这个版本是用两个栈实时推算，最终得到一个最简的后缀表达式再进行计算
 using namespace std;
 
 typedef enum 
@@ -142,16 +142,16 @@ int main()
             rank = Rank_None;
             strsign.push(str[cnt++]);        //符号入栈
         }
-        else if( Sign_Rank( str[cnt] ) != Rank_None )        //运算符号，这里没有符号纠错
+        else if( Sign_Rank( str[cnt] ) != Rank_None )        //有优先级表明这是四则运算符
         {
             if( Sign_Rank( str[cnt+1] ) != Rank_None )      //连续符号检错
             {
                 error = 1;
                 break;
             }
-            if( Sign_Rank( str[cnt] ) < rank )       //优先级小于前面入栈的
+            if( Sign_Rank( str[cnt] ) <= rank )       //优先级小于栈顶的优先级
             {
-                while( Sign_Rank( strsign.Top() )  > Sign_Rank( str[cnt] ) )
+                while( Sign_Rank( strsign.Top() )  >= Sign_Rank( str[cnt] ) )
                 {
                     //取值
                     strnum.push( num2val(strnum.pop(), strnum.pop(), strsign.pop() ) );
